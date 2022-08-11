@@ -3,6 +3,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.regex.Pattern;
 
 @WebServlet(
         description = "Login Servlet Testing",
@@ -20,8 +21,9 @@ public class LoginServlet extends HttpServlet {
 
         String userID = getServletConfig().getInitParameter("user");
         String password = getServletConfig().getInitParameter("password");
-        if (userID.equals(user) && password.equals(pwd)){
-            request.setAttribute("user",user);
+        if (Pattern.matches("[A-Z][a-z]{2,}", userID) && userID.equals(user) && password.equals(pwd)) {
+            request.setAttribute("user", user);
+            request.getRequestDispatcher("LoginSuccess.jsp").forward(request, response);
             request.getRequestDispatcher("LoginSuccess.jsp").forward(request,response);
         }else {
             RequestDispatcher requestDispatcher = getServletContext().getNamedDispatcher("/login.html");
